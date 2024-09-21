@@ -161,7 +161,6 @@ app.get('/download', async ({ cookie, redirect, query, set, headers }) => {
     if (!tokenData.success) {
       throw new Error('Invalid token data')
     }
-    console.log(tokenData.data.steamId)
     if (!await checkIfOwnsAdon(tokenData.data.steamId)) {
       // cookie['adon-mods-token'].remove()
       return redirect(host + '/purchase?file=' + query.file)
@@ -207,7 +206,12 @@ app.get('/download', async ({ cookie, redirect, query, set, headers }) => {
   set.headers['Content-Type'] = 'application/octet-stream'
   set.headers['Content-Disposition'] = `attachment; filename="${path.basename(filePath)}"`
 
-  return Bun.file(filePath).slice(start, end)
+  let resultingFile = Bun.file(filePath)
+  if (range) {
+    resultingFile = resultingFile.slice(start, end + 1)
+  }
+
+  return resultingFile
 })
 
 app.listen(process.env.PORT || 3001)
