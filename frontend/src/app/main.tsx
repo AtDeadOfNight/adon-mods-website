@@ -6,6 +6,7 @@ import { HomePage } from '../pages'
 import { NotFoundPage } from '@/pages/not-found'
 import { PurchasePage } from '@/pages/purchase'
 import { Toaster } from 'sonner'
+import { DownloadPage } from '@/pages/download-page'
 
 const router = createBrowserRouter([
   {
@@ -15,6 +16,10 @@ const router = createBrowserRouter([
   {
     path: '/purchase',
     element: <PurchasePage />,
+  },
+  {
+    path: '/download-page',
+    element: <DownloadPage />,
   },
   {
     path: "*",

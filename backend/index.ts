@@ -129,7 +129,7 @@ app.get('/auth/steam/callback', async ({ redirect, set, query, cookie }) => {
         maxAge: 31557600
       })
       if (reqQuery.data.file) {
-        return redirect(host + '/download?file=' + reqQuery.data.file)
+        return redirect(host + '/download-page?file=' + reqQuery.data.file)
       } else {
         return redirect(host)
       }
