@@ -126,7 +126,7 @@ app.get('/auth/steam/callback', async ({ redirect, set, query, cookie }) => {
       cookie['adon-mods-token'].set({
         value: token,
         httpOnly: true,
-        maxAge: 31557600
+        maxAge: 365 * 24 * 60 * 60
       })
       if (reqQuery.data.file) {
         return redirect(host + '/download-page?file=' + reqQuery.data.file)
@@ -152,6 +152,7 @@ app.get('/download', async ({ cookie, redirect, query, set, headers }) => {
   if (!token) {
     return redirect(host + '/purchase?file=' + query.file)
   }
+  cookie['adon-mods-token'].maxAge = cookie['adon-mods-token'].maxAge || 365 * 24 * 60 * 60
   try {
     let decoded = await jwt.verify(token, JWT_SECRET)
     if (typeof decoded === 'string') decoded = JSON.parse(decoded)
@@ -197,7 +198,6 @@ app.get('/download', async ({ cookie, redirect, query, set, headers }) => {
 
     set.headers['Content-Range'] = `bytes ${start}-${end}/${fileStat.size}`
     set.headers['Content-Length'] = String(end - start + 1)
-    set.status = 206
   } else {
     set.headers['Content-Length'] = String(fileStat.size)
   }
