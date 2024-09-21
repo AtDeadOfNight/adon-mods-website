@@ -29,8 +29,12 @@ const app = new Elysia()
 const host = process.env.PUBLIC_URL || 'http://localhost:3001'
 const redirectURL = '/auth/steam/callback'
 
-app.get('/auth/steam', async ({ redirect }) => {
-  const redirectUrl = `https://steamcommunity.com/openid/login?openid.ns=http://specs.openid.net/auth/2.0&openid.mode=checkid_setup&openid.return_to=${host}${redirectURL}&openid.realm=${host}&openid.identity=http://specs.openid.net/auth/2.0/identifier_select&openid.claimed_id=http://specs.openid.net/auth/2.0/identifier_select`
+app.get('/auth/steam', async ({ redirect, query }) => {
+  let returnTo = host + redirectURL
+  if(query.file) {
+    returnTo += '?file=' + query.file
+  }
+  const redirectUrl = `https://steamcommunity.com/openid/login?openid.ns=http://specs.openid.net/auth/2.0&openid.mode=checkid_setup&openid.return_to=${encodeURIComponent(returnTo)}&openid.realm=${host}&openid.identity=http://specs.openid.net/auth/2.0/identifier_select&openid.claimed_id=http://specs.openid.net/auth/2.0/identifier_select`
   return redirect(redirectUrl)
 })
 
@@ -69,6 +73,7 @@ app.get('/auth/steam/callback', async ({ redirect, set, query, cookie }) => {
       'openid.assoc_handle': z.string(),
       'openid.signed': z.string(),
       'openid.sig': z.string(),
+      'file': z.string().optional()
     }).safeParseAsync(query)
     if (!reqQuery.success) {
       set.status = 400
@@ -91,7 +96,7 @@ app.get('/auth/steam/callback', async ({ redirect, set, query, cookie }) => {
     for (const field of signedFields) {
       const key = `openid.${field}`
       if (key in reqQuery.data) {
-        const value = reqQuery.data[key as keyof typeof reqQuery.data]
+        const value = reqQuery.data[key as keyof typeof reqQuery.data] as string
         validateParams.append(`openid.${field}`, value)
       }
     }
@@ -107,7 +112,7 @@ app.get('/auth/steam/callback', async ({ redirect, set, query, cookie }) => {
     const isValid = verificationResponse.includes('is_valid:true')
     if(!isValid) {
       set.status = 401
-      return { ok: false }
+      return { ok: false, error: 'Invalid state. Have you pressed "back" button in your browser? Please return to the main page and try again.' }
     }
 
     const steamId = reqQuery.data['openid.claimed_id'].match(/\/(\d+)$/)?.[1]
@@ -123,9 +128,13 @@ app.get('/auth/steam/callback', async ({ redirect, set, query, cookie }) => {
         httpOnly: true,
         maxAge: 31557600
       })
-      return redirect(host + '/?success=true')
+      if (reqQuery.data.file) {
+        return redirect(host + '/download?file=' + reqQuery.data.file)
+      } else {
+        return redirect(host)
+      }
     } else {
-      return redirect(host + '/purchase')
+      return redirect(host + '/purchase?purchased=false')
     }
   } catch (error) {
     console.error(error)
@@ -141,7 +150,7 @@ const protectedDownloads = {
 app.get('/download', async ({ cookie, redirect, query, set, headers }) => {
   const token = cookie['adon-mods-token'].value
   if (!token) {
-    return redirect(host + '/purchase')
+    return redirect(host + '/purchase?file=' + query.file)
   }
   try {
     let decoded = await jwt.verify(token, JWT_SECRET)
@@ -155,7 +164,7 @@ app.get('/download', async ({ cookie, redirect, query, set, headers }) => {
     console.log(tokenData.data.steamId)
     if (!await checkIfOwnsAdon(tokenData.data.steamId)) {
       // cookie['adon-mods-token'].remove()
-      return redirect(host + '/purchase')
+      return redirect(host + '/purchase?file=' + query.file)
     }
   } catch(e) {
     set.status = 400
