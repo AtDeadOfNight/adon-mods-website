@@ -207,8 +207,7 @@ app.get('/download', async ({ cookie, redirect, query, set, headers }) => {
   set.headers['Content-Type'] = 'application/octet-stream'
   set.headers['Content-Disposition'] = `attachment; filename="${path.basename(filePath)}"`
 
-  const stream = fs.createReadStream(filePath, { start, end })
-  return stream
+  return Bun.file(filePath).slice(start, end)
 })
 
 app.listen(process.env.PORT || 3001)
