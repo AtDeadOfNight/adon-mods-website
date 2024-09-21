@@ -152,7 +152,7 @@ app.get('/download', async ({ cookie, redirect, query, set, headers }) => {
   if (!token) {
     return redirect(host + '/purchase?file=' + query.file)
   }
-  cookie['adon-mods-token'].maxAge = cookie['adon-mods-token'].maxAge || 365 * 24 * 60 * 60
+  cookie['adon-mods-token'].expires = cookie['adon-mods-token'].expires
   try {
     let decoded = await jwt.verify(token, JWT_SECRET)
     if (typeof decoded === 'string') decoded = JSON.parse(decoded)
