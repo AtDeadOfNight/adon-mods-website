@@ -144,7 +144,7 @@ app.get('/auth/steam/callback', async ({ redirect, set, query, cookie }) => {
 })
 
 const protectedDownloads = {
-  'At Dead Of Night.app': './At Dead Of Night.app',
+  'At Dead Of Night.app': './At Dead Of Night.zip',
 }
 
 app.get('/download', async ({ cookie, redirect, query, set, headers }) => {
@@ -205,7 +205,7 @@ app.get('/download', async ({ cookie, redirect, query, set, headers }) => {
 
   set.headers['Accept-Ranges'] = 'bytes'
   set.headers['Content-Type'] = 'application/octet-stream'
-  set.headers['Content-Disposition'] = `attachment; filename="${fileNameParsing.data}"`
+  set.headers['Content-Disposition'] = `attachment; filename="${path.basename(filePath)}"`
 
   const stream = fs.createReadStream(filePath, { start, end })
   return stream
