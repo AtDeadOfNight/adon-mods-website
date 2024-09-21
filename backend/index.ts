@@ -181,7 +181,7 @@ app.get('/download', async ({ cookie, redirect, query, set, headers }) => {
   const filePath = path.resolve(__dirname, '../static', protectedDownloads[fileNameParsing.data as keyof typeof protectedDownloads])
   const fileStat = await fs.promises.stat(filePath)
 
-  const range = headers['range']
+  const range = headers['range'] 
   let start = 0
   let end = fileStat.size - 1
 
@@ -203,7 +203,7 @@ app.get('/download', async ({ cookie, redirect, query, set, headers }) => {
     set.headers['Content-Length'] = String(fileStat.size)
   }
 
-  set.headers['Accept-Ranges'] = 'bytes'
+  // set.headers['Accept-Ranges'] = 'bytes'
   set.headers['Content-Type'] = 'application/octet-stream'
   set.headers['Content-Disposition'] = `attachment; filename="${path.basename(filePath)}"`
 
