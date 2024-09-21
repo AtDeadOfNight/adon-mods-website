@@ -1,3 +1,4 @@
+import React from 'react'
 import { toast } from "sonner"
 
 export function PurchasePage() {
@@ -8,9 +9,13 @@ export function PurchasePage() {
     signIn += '?file=' + encodeURIComponent(file)
   }
 
-  if (new URLSearchParams(window.location.search).get('success') === 'false') {
-    toast.error('You must own At Dead Of Night in Steam to download this mod.')
-  }
+  React.useEffect(() => {
+    if (new URLSearchParams(window.location.search).get('success') === 'false') {
+      setTimeout(() => {
+        toast.error('You must own At Dead Of Night in Steam to download this mod.')
+      }, 0)
+    }
+  }, [])
   
   return (
     <main className='flex flex-col items-center justify-center px-16 text-center'>
