@@ -122,7 +122,7 @@ app.get('/auth/steam/callback', async ({ redirect, set, query, cookie }) => {
     }
 
     if (await checkIfOwnsAdon(steamId)) {
-      const token = jwt.sign({ steamId }, JWT_SECRET, { expiresIn: '1y' })
+      const token = jwt.sign({ steamId }, JWT_SECRET, { expiresIn: 365 * 24 * 60 * 60 })
       cookie['adon-mods-token'].set({
         value: token,
         httpOnly: true,
@@ -152,7 +152,7 @@ app.get('/download', async ({ cookie, redirect, query, set, headers }) => {
   if (!token) {
     return redirect(host + '/purchase?file=' + query.file)
   }
-  cookie['adon-mods-token'].expires = cookie['adon-mods-token'].expires
+  
   try {
     let decoded = await jwt.verify(token, JWT_SECRET)
     if (typeof decoded === 'string') decoded = JSON.parse(decoded)
@@ -163,8 +163,15 @@ app.get('/download', async ({ cookie, redirect, query, set, headers }) => {
       throw new Error('Invalid token data')
     }
     if (!await checkIfOwnsAdon(tokenData.data.steamId)) {
-      // cookie['adon-mods-token'].remove()
+      cookie['adon-mods-token'].remove()
       return redirect(host + '/purchase?file=' + query.file)
+    } else {
+      jwt.sign({ steamId: tokenData.data.steamId }, JWT_SECRET, { expiresIn: 365 * 24 * 60 * 60 })
+      cookie['adon-mods-token'].set({
+        value: token,
+        httpOnly: true,
+        maxAge: 365 * 24 * 60 * 60
+      })
     }
   } catch(e) {
     set.status = 400
