@@ -14,6 +14,10 @@ export function PurchasePage() {
       setTimeout(() => {
         toast.error('You must own At Dead Of Night in Steam to download this mod.')
       }, 0)
+    } else if(new URLSearchParams(window.location.search).get('success') === 'unknown') {
+      setTimeout(() => {
+        toast.warning('We couldn\'t access your Steam library. Most likely, that\'s because your profile is hidden. OpenID restricts access to private Steam profiles. You must open your Steam profile to prove that you own At Dead Of Night. Then please click the Sign In button again. ', { duration: 10000 })
+      }, 0)
     }
   }, [])
   

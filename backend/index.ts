@@ -39,7 +39,7 @@ app.get('/auth/steam', async ({ redirect, query }) => {
 })
 
 const cache = new Map<string, { expires: number, owns: boolean }>()
-async function checkIfOwnsAdon(steamId: string): Promise<boolean> {
+async function checkIfOwnsAdon(steamId: string): Promise<boolean | 'unknown'> {
   const cachedResponse = cache.get(steamId)
   if (cachedResponse) {
     if (cachedResponse.expires > Date.now()) {
@@ -48,11 +48,18 @@ async function checkIfOwnsAdon(steamId: string): Promise<boolean> {
   }
   const response = await fetch('https://api.steampowered.com/IPlayerService/GetOwnedGames/v1/?' + new URLSearchParams({
     key: STEAM_API_KEY as string,
-    steamid: steamId,
-    include_appinfo: String(false),
-    include_played_free_games: String(false)
+    input_json: JSON.stringify({ 
+      steamid: steamId,
+      appids_filter: [1450830],
+      include_appinfo: false,
+      include_played_free_games: false
+    }),
   }))
     .then((res) => res.json() as Promise<{ response: { games: { appid: number }[] } }>)
+
+  if(!('games' in response.response) || !Array.isArray(response.response.games)) {
+    return 'unknown'
+  }
 
   const ownsAdon = response.response.games.some(game => game.appid === 1450830)
   cache.set(steamId, { expires: Date.now() + 1000 * 60 * 60 * 24 * 7, owns: ownsAdon })
@@ -121,7 +128,9 @@ app.get('/auth/steam/callback', async ({ redirect, set, query, cookie }) => {
       return { ok: false }
     }
 
-    if (await checkIfOwnsAdon(steamId)) {
+    const ownsAdon = await checkIfOwnsAdon(steamId)
+
+    if (ownsAdon === true) {
       const token = jwt.sign({ steamId }, JWT_SECRET, { expiresIn: 365 * 24 * 60 * 60 })
       cookie['adon-mods-token'].set({
         value: token,
@@ -133,6 +142,8 @@ app.get('/auth/steam/callback', async ({ redirect, set, query, cookie }) => {
       } else {
         return redirect(host)
       }
+    } else if (ownsAdon === 'unknown') {
+      return redirect(host + '/purchase?purchased=unknown')
     } else {
       return redirect(host + '/purchase?purchased=false')
     }
@@ -162,7 +173,7 @@ app.get('/download', async ({ cookie, redirect, query, set, headers }) => {
     if (!tokenData.success) {
       throw new Error('Invalid token data')
     }
-    if (!await checkIfOwnsAdon(tokenData.data.steamId)) {
+    if (await checkIfOwnsAdon(tokenData.data.steamId) === false) {
       cookie['adon-mods-token'].remove()
       return redirect(host + '/purchase?file=' + query.file)
     } else {
