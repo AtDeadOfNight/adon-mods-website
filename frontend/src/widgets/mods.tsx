@@ -29,6 +29,13 @@ export function Mods() {
           description='Mod that replaces Jimmy with Jerma985 streamer'
           link='https://github.com/AtDeadOfNight/at-dead-of-jerma-mod'
         />
+        <Mod
+          name='At Dead Of deez nuts'
+          image='atdeadofdeeznuts.png'
+          description='Mod by Maxwell Heller (maxwellheller98@gmail.com)'
+          link={'/download?file=' + encodeURIComponent('atdeadofdeeznuts.zip')}
+          requiresSignIn
+        />
       </div>
     </section>
   )
