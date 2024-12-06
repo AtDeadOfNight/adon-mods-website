@@ -156,7 +156,7 @@ app.get('/auth/steam/callback', async ({ redirect, set, query, cookie }) => {
 
 const protectedDownloads = {
   'At Dead Of Night.app': './At Dead Of Night.zip',
-  'atdeadofdeeznuts.zip': './atdeadofdeeznuts.zip',
+  'atdeadofdeeznuts.7z': './atdeadofdeeznuts.7z',
 }
 
 app.get('/download', async ({ cookie, redirect, query, set, headers }) => {

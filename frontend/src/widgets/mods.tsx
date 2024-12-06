@@ -32,8 +32,8 @@ export function Mods() {
         <Mod
           name='At Dead Of deez nuts'
           image='atdeadofdeeznuts.png'
-          description='Mod by Maxwell Heller (maxwellheller98@gmail.com)'
-          link={'/download?file=' + encodeURIComponent('atdeadofdeeznuts.zip')}
+          description='Mod by Max (maxwellheller98@gmail.com)'
+          link={'/download?file=' + encodeURIComponent('atdeadofdeeznuts.7z')}
           requiresSignIn
         />
       </div>
