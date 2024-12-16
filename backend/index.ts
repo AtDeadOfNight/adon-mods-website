@@ -119,7 +119,7 @@ app.get('/auth/steam/callback', async ({ redirect, set, query, cookie }) => {
     const isValid = verificationResponse.includes('is_valid:true')
     if(!isValid) {
       set.status = 401
-      return { ok: false, error: 'Invalid state. Have you pressed "back" button in your browser? Please return to the main page and try again.' }
+      return { ok: false, error: 'Invalid state. Either you pressed "back" button in your browser or Steam broke OpenID authorization and our server can\'t verify your steam authorization token. Please return to the main page and try again or try later. Other browsers might help too, but this is a Steam problem.' }
     }
 
     const steamId = reqQuery.data['openid.claimed_id'].match(/\/(\d+)$/)?.[1]
