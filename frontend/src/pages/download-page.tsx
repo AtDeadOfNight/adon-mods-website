@@ -13,7 +13,9 @@ export function DownloadPage() {
 
   return (
     <div className='flex items-center justify-center text-white'>
-      <a href={redirect} className='text-white underline underline-offset-2'>Click here if your download hasn't started</a>
+      <a href={redirect} className='text-white underline underline-offset-2'>
+        Click here if your download hasn't started
+      </a>
     </div>
   )
 }

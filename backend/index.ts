@@ -119,7 +119,7 @@ app.get('/auth/steam/callback', async ({ redirect, set, query, cookie }) => {
     const isValid = verificationResponse.includes('is_valid:true')
     if(!isValid) {
       set.status = 401
-      return { ok: false, error: 'Invalid state. Either you pressed "back" button in your browser or Steam broke OpenID authorization and our server can\'t verify your steam authorization token. Please return to the main page and try again or try later. Other browsers might help too, but this is a Steam problem.' }
+      return { ok: false, error: 'Invalid state. Either you pressed "back" button in your browser or Steam broke OpenID authorization and our server can\'t verify your steam authorization token. Please return to the main page and try again or try later. Other browsers might help too, but this is a Steam problem.', errorRu: 'Ошибка. Или вы нажали "назад" в браузере, или у Steam сломались серверы авторизации OpenID и наш сервер не может подтвердить ваш токен. Пожалуйста, вернитесь на главную и попробуйте еще раз или попробуйте позже. Использование других браузеров также может помочь, но это, вероятнее всего, проблема Steam.' }
     }
 
     const steamId = reqQuery.data['openid.claimed_id'].match(/\/(\d+)$/)?.[1]
@@ -157,6 +157,8 @@ app.get('/auth/steam/callback', async ({ redirect, set, query, cookie }) => {
 const protectedDownloads = {
   'At Dead Of Night.app': './At Dead Of Night.zip',
   'atdeadofdeeznuts.7z': './atdeadofdeeznuts.7z',
+  'at-dead-of-night-android-v1.0.0-t.me_adonru.apk': './at-dead-of-night-android-v1.0.0-t.me_adonru.apk',
+  'at-dead-of-night-ios-v1.0.0-t.me_adonru.ipa': './at-dead-of-night-ios-v1.0.0-t.me_adonru.ipa',
 }
 
 app.get('/download', async ({ cookie, redirect, query, set, headers }) => {

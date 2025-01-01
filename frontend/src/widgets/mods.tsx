@@ -5,6 +5,24 @@ export function Mods() {
     <section className='bg-neutral-800 flex justify-center p-6 md:p-10'>
       <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 w-full max-w-[1200px] gap-6 1280px:gap-8'>
         <Mod
+          name='Android port'
+          nameRu='Порт на Android (APK)'
+          image='adon-android.png'
+          description='Unofficial At Dead Of Night port for Android. ONLY FOR PHONES WITH AT LEAST 8 GB OF RAM. Check if your device is compatible: https://docs.google.com/spreadsheets/d/1oyyau5VPeA4obLWvlPKQQSB8kgIYfQoX7xH1DXmIr6A/edit?usp=sharing'
+          descriptionRu='Неофициальный порт At Dead Of Night на Android. ТОЛЬКО ДЛЯ УСТРОЙСТВ С 8 ГБ ОПЕРАТИВНОЙ ПАМЯТИ И БОЛЕЕ. Проверьте совместимость вашего устройства: https://docs.google.com/spreadsheets/d/1oyyau5VPeA4obLWvlPKQQSB8kgIYfQoX7xH1DXmIr6A/edit?usp=sharing'
+          link={'/download?file=' + encodeURIComponent('at-dead-of-night-android-v1.0.0-t.me_adonru.apk')} 
+          requiresSignIn
+        />
+        <Mod
+          name='iPhone port'
+          nameRu='Порт на iPhone (IPA)'
+          image='adon-iphone.png'
+          description='Unofficial At Dead Of Night port for iPhone. Playable, but has performance problems. Ipa-file must be installed through AltStore or Sideloadly. Devices performance table: https://docs.google.com/spreadsheets/d/1oyyau5VPeA4obLWvlPKQQSB8kgIYfQoX7xH1DXmIr6A/edit?usp=sharing'
+          descriptionRu='Неофициальный порт At Dead Of Night port на iPhone. Возможно играть, но имеет проблемы с производительностью. Ipa-файл устанавливается через AltStore или Sideloadly. Таблица производительности по устройствам: https://docs.google.com/spreadsheets/d/1oyyau5VPeA4obLWvlPKQQSB8kgIYfQoX7xH1DXmIr6A/edit?usp=sharing'
+          link={'/download?file=' + encodeURIComponent('at-dead-of-night-ios-v1.0.0-t.me_adonru.ipa')} 
+          requiresSignIn
+        />
+        <Mod
           name='MacOS port'
           image='adon-macos.gif'
           description='At Dead Of Night.app running natively on mac, no Wine or emulators'
