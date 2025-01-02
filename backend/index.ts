@@ -104,7 +104,9 @@ app.get('/auth/steam/callback', async ({ redirect, set, query, cookie }) => {
       const key = `openid.${field}`
       if (key in reqQuery.data) {
         const value = reqQuery.data[key as keyof typeof reqQuery.data] as string
-        validateParams.append(`openid.${field}`, value)
+        if (!validateParams.has(key)) {
+          validateParams.append(key, value)
+        }
       }
     }
 
@@ -119,7 +121,7 @@ app.get('/auth/steam/callback', async ({ redirect, set, query, cookie }) => {
     const isValid = verificationResponse.includes('is_valid:true')
     if(!isValid) {
       set.status = 401
-      return { ok: false, error: 'Invalid state. Either you pressed "back" button in your browser or Steam broke OpenID authorization and our server can\'t verify your steam authorization token. Please return to the main page and try again or try later. Other browsers might help too, but this is a Steam problem.', errorRu: 'Ошибка. Или вы нажали "назад" в браузере, или у Steam сломались серверы авторизации OpenID и наш сервер не может подтвердить ваш токен. Пожалуйста, вернитесь на главную и попробуйте еще раз или попробуйте позже. Использование других браузеров также может помочь, но это, вероятнее всего, проблема Steam.' }
+      return { ok: false, error: 'Invalid state. You probably pressed "back" button in your browser.', errorRu: 'Ошибка. Скорее всего, вы нажали "назад" в браузере.' }
     }
 
     const steamId = reqQuery.data['openid.claimed_id'].match(/\/(\d+)$/)?.[1]
