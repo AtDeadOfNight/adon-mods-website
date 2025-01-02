@@ -5,7 +5,7 @@ export function Hero() {
       <h1 className='m-0 font-bold'>At Dead Of Night mods</h1>
       {isRu ? (
         <p>
-          Добро пожаловать на сайт модов ADON! Вы можете добавить свой моды, отправив письмо на <a href='mailto:adon@hloth.dev'>adon@hloth.dev</a>
+          Добро пожаловать на сайт модов ADON! Вы можете добавить свои моды, отправив письмо на <a href='mailto:adon@hloth.dev'>adon@hloth.dev</a>
         </p>
       ) : (
         <p>

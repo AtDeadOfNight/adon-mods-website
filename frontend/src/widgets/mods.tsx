@@ -8,8 +8,8 @@ export function Mods() {
           name='Android port'
           nameRu='Порт на Android (APK)'
           image='adon-android.png'
-          description='Unofficial At Dead Of Night port for Android. ONLY FOR PHONES WITH AT LEAST 8 GB OF RAM. Check if your device is compatible: https://docs.google.com/spreadsheets/d/1oyyau5VPeA4obLWvlPKQQSB8kgIYfQoX7xH1DXmIr6A/edit?usp=sharing'
-          descriptionRu='Неофициальный порт At Dead Of Night на Android. ТОЛЬКО ДЛЯ УСТРОЙСТВ С 8 ГБ ОПЕРАТИВНОЙ ПАМЯТИ И БОЛЕЕ. Проверьте совместимость вашего устройства: https://docs.google.com/spreadsheets/d/1oyyau5VPeA4obLWvlPKQQSB8kgIYfQoX7xH1DXmIr6A/edit?usp=sharing'
+          description='Unofficial At Dead Of Night port for Android. ONLY FOR PHONES WITH AT LEAST 8 GB OF RAM. <a href="https://docs.google.com/spreadsheets/d/1oyyau5VPeA4obLWvlPKQQSB8kgIYfQoX7xH1DXmIr6A/edit?usp=sharing" target="_blank" rel="noreferrer noopener">Check if your device is compatible</a>'
+          descriptionRu='Неофициальный порт At Dead Of Night на Android. ТОЛЬКО ДЛЯ УСТРОЙСТВ С 8 ГБ ОПЕРАТИВНОЙ ПАМЯТИ И БОЛЕЕ. <a href="https://docs.google.com/spreadsheets/d/1oyyau5VPeA4obLWvlPKQQSB8kgIYfQoX7xH1DXmIr6A/edit?usp=sharing" target="_blank" rel="noreferrer noopener">Проверьте совместимость вашего устройства</a>'
           link={'/download?file=' + encodeURIComponent('at-dead-of-night-android-v1.0.0-t.me_adonru.apk')} 
           requiresSignIn
         />
@@ -17,8 +17,8 @@ export function Mods() {
           name='iPhone port'
           nameRu='Порт на iPhone (IPA)'
           image='adon-iphone.png'
-          description='Unofficial At Dead Of Night port for iPhone. Playable, but has performance problems. Ipa-file must be installed through AltStore or Sideloadly. Devices performance table: https://docs.google.com/spreadsheets/d/1oyyau5VPeA4obLWvlPKQQSB8kgIYfQoX7xH1DXmIr6A/edit?usp=sharing'
-          descriptionRu='Неофициальный порт At Dead Of Night port на iPhone. Возможно играть, но имеет проблемы с производительностью. Ipa-файл устанавливается через AltStore или Sideloadly. Таблица производительности по устройствам: https://docs.google.com/spreadsheets/d/1oyyau5VPeA4obLWvlPKQQSB8kgIYfQoX7xH1DXmIr6A/edit?usp=sharing'
+          description='Unofficial At Dead Of Night port for iPhone. Playable, but has performance problems. Ipa-file must be installed through AltStore or Sideloadly. <a href="https://docs.google.com/spreadsheets/d/1oyyau5VPeA4obLWvlPKQQSB8kgIYfQoX7xH1DXmIr6A/edit?usp=sharing" target="_blank" rel="noreferrer noopener">Devices performance table</a>'
+          descriptionRu='Неофициальный порт At Dead Of Night port на iPhone. Возможно играть, но имеет проблемы с производительностью. Ipa-файл устанавливается через AltStore или Sideloadly. <a href="https://docs.google.com/spreadsheets/d/1oyyau5VPeA4obLWvlPKQQSB8kgIYfQoX7xH1DXmIr6A/edit?usp=sharing" target="_blank" rel="noreferrer noopener">Таблица производительности по устройствам</a>'
           link={'/download?file=' + encodeURIComponent('at-dead-of-night-ios-v1.0.0-t.me_adonru.ipa')} 
           requiresSignIn
         />
