@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /purchase
+Disallow: /download
+Disallow: /auth/steam
