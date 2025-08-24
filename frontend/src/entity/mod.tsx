@@ -3,18 +3,24 @@ export function Mod({
 	nameRu,
 	description,
 	descriptionRu,
-	link,
 	image,
-	requiresSignIn = false
+	...props
 }: {
 	name: string;
 	nameRu?: string;
 	description: string;
 	descriptionRu?: string;
 	image: string;
-	link: string;
-	requiresSignIn?: boolean;
-}) {
+} & (
+	| {
+			id: string;
+			requiresSignIn: true;
+	  }
+	| {
+			link: string;
+			requiresSignIn: false;
+	  }
+)) {
 	const isRu = navigator.language.startsWith('ru');
 	return (
 		<div
@@ -43,7 +49,7 @@ export function Mod({
 			></img>
 			<div className="flex gap-4 items-start">
 				<a
-					href={link}
+					href={props.requiresSignIn ? `download?file=${props.id}` : props.link}
 					className="bg-indigo-600 text-white py-1.5 px-3 rounded-md
 						hover:text-neutral-200 transition-colors duration-200 shadow-lg"
 					target="_blank"
@@ -51,7 +57,7 @@ export function Mod({
 				>
 					{isRu ? 'Скачать' : 'Download'}
 				</a>
-				{requiresSignIn && (
+				{props.requiresSignIn && (
 					<span className="text-xs leading-tight text-neutral-500">
 						{isRu
 							? 'Для этого файла требуется авторизация в Steam и купленная копия игры'

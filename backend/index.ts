@@ -16,7 +16,7 @@ if (!JWT_SECRET) {
 }
 
 const protectedDownloads = {
-	'At Dead Of Night.app': './At Dead Of Night.zip',
+	'AtDeadOfNight.app': './At Dead Of Night.zip',
 	'atdeadofdeeznuts.7z': './atdeadofdeeznuts.7z',
 	'at-dead-of-night-android-v1.0.0-t.me_adonru.apk':
 		'./at-dead-of-night-android-v1.0.0-t.me_adonru.apk',
@@ -258,14 +258,14 @@ const app = new Elysia()
 					maxAge: 365 * 24 * 60 * 60,
 				});
 				if (file) {
-					return redirect(host + '/download?file=' + file);
+					return redirect(host + '/download-page/' + file);
 				} else {
 					return redirect(host);
 				}
 			} else if (ownsAdon === 'unknown') {
-				return redirect(host + '/purchase?purchased=unknown');
+				return redirect(host + '/purchase-to-download/?purchased=unknown');
 			} else {
-				return redirect(host + '/purchase?purchased=false');
+				return redirect(host + '/purchase-to-download/?purchased=false');
 			}
 		} catch (error) {
 			console.error(error);
@@ -280,7 +280,7 @@ const app = new Elysia()
 	.get('/download', async ({ cookie, redirect, query, set, headers }) => {
 		const token = cookie['adon-mods-token'].value;
 		if (!token) {
-			return redirect(host + '/purchase?file=' + query.file);
+			return redirect(host + '/purchase-to-download/' + query.file);
 		}
 
 		try {
@@ -296,7 +296,7 @@ const app = new Elysia()
 			}
 			if ((await checkIfOwnsAdon(tokenData.data.steamId)) === false) {
 				cookie['adon-mods-token'].remove();
-				return redirect(host + '/purchase?file=' + query.file);
+				return redirect(host + '/purchase-to-download/' + query.file);
 			} else {
 				jwt.sign({ steamId: tokenData.data.steamId }, JWT_SECRET, {
 					expiresIn: 365 * 24 * 60 * 60,

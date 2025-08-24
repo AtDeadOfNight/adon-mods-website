@@ -3,6 +3,8 @@ import { RouteRecord } from 'vite-react-ssg';
 import { HomePage } from '../pages';
 import { PurchasePage } from '@/pages/purchase';
 import { NotFoundPage } from '@/pages/not-found';
+import { DownloadPage } from '@/pages/download-page';
+import { mods } from '@/shared/mods';
 
 export const routes: RouteRecord[] = [
 	{
@@ -11,8 +13,16 @@ export const routes: RouteRecord[] = [
 		children: [
 			{ index: true, element: <HomePage /> },
 			{
-				path: 'purchase',
-				element: <PurchasePage />
+				path: 'purchase-to-download/:file',
+				element: <PurchasePage />,
+				getStaticPaths: () =>
+					mods.filter((m) => m.requiresSignIn).map((m) => m.id)
+			},
+			{
+				path: 'download-page/:file',
+				element: <DownloadPage />,
+				getStaticPaths: () =>
+					mods.filter((m) => m.requiresSignIn).map((m) => m.id)
 			},
 			{
 				path: '*',
