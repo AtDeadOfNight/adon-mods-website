@@ -35,10 +35,12 @@ async function checkIfOwnsAdon(steamId: string): Promise<boolean | 'unknown'> {
 			return cachedResponse.owns;
 		}
 	}
+
+	if (!STEAM_API_KEY) throw new Error('Missing Steam API key');
 	const responseSerialized = await fetch(
 		'https://api.steampowered.com/IPlayerService/GetOwnedGames/v1/?' +
 			new URLSearchParams({
-				key: STEAM_API_KEY as string,
+				key: STEAM_API_KEY,
 				input_json: JSON.stringify({
 					steamid: steamId,
 					appids_filter: [1450830],
