@@ -263,9 +263,9 @@ const app = new Elysia()
 					return redirect(host);
 				}
 			} else if (ownsAdon === 'unknown') {
-				return redirect(host + '/purchase-to-download/?purchased=unknown');
+				return redirect(host + '/error/game-owned-unknown');
 			} else {
-				return redirect(host + '/purchase-to-download/?purchased=false');
+				return redirect(host + '/error/game-not-owned');
 			}
 		} catch (error) {
 			console.error(error);

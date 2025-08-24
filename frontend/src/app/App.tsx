@@ -5,6 +5,7 @@ import { PurchasePage } from '@/pages/purchase';
 import { NotFoundPage } from '@/pages/not-found';
 import { DownloadPage } from '@/pages/download-page';
 import { mods } from '@/shared/mods';
+import { ErrorSteamAuth } from '@/pages/error-steam-auth';
 
 export const routes: RouteRecord[] = [
 	{
@@ -23,6 +24,14 @@ export const routes: RouteRecord[] = [
 				element: <DownloadPage />,
 				getStaticPaths: () =>
 					mods.filter((m) => m.requiresSignIn).map((m) => m.id)
+			},
+			{
+				path: 'error/game-not-owned',
+				element: <ErrorSteamAuth owned={false} />
+			},
+			{
+				path: 'error/game-owned-unknown',
+				element: <ErrorSteamAuth owned={'unknown'} />
 			},
 			{
 				path: '*',

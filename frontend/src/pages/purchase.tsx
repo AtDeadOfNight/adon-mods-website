@@ -1,8 +1,13 @@
 import React from 'react';
+import { useParams } from 'react-router-dom';
 import { toast } from 'sonner';
 
 export function PurchasePage() {
-	const [signInUrl, setSignInUrl] = React.useState('/auth/steam');
+	const file = useParams().file;
+	const url = file
+		? '/auth/steam' + '?file=' + encodeURIComponent(file)
+		: undefined;
+
 	const [isRu, setIsRu] = React.useState(false);
 
 	React.useEffect(() => {
@@ -10,11 +15,6 @@ export function PurchasePage() {
 	}, []);
 
 	React.useEffect(() => {
-		const file = new URLSearchParams(window.location.search).get('file');
-		if (file) {
-			setSignInUrl('/auth/steam' + '?file=' + encodeURIComponent(file));
-		}
-
 		if (
 			new URLSearchParams(window.location.search).get('success') === 'false'
 		) {
@@ -22,7 +22,7 @@ export function PurchasePage() {
 				toast.error(
 					isRu
 						? 'У вас должна быть куплена At Dead Of Night в Steam для скачивания.'
-						: 'You must own At Dead Of Night in Steam to download this mod.'
+						: 'You must have an At Dead Of Night copy purchased in Steam to download this mod.'
 				);
 			}, 0);
 		} else if (
@@ -73,7 +73,7 @@ export function PurchasePage() {
 						? 'Не волнуйтесь, вам не придется вводить свои учетные данные Steam. Мы используем OpenID аутентификацию. Мы никогда не получаем конфиденциальную информацию из вашего аккаунта, как и указано на странице авторизации Steam. Мы также не храним никакой информации о вас. Мы выполняем только одноразовую проверку, есть ли у вас At Dead Of Night в вашей библиотеке, и вам не придется авторизовываться снова, чтобы скачать другие моды, требующие покупки игры в Steam.'
 						: "Don't worry, you won't have to enter your Steam credentials. We use OpenID authentification. We never receive any private info from your account, as stated on Steam authorization page. We also do not store any information about you. We only perform one-time check if you have At Dead Of Night in your library and you won't have to authorize again in order to download other mods that require purchase in Steam."}
 				</p>
-				<a href={signInUrl} className="mt-5">
+				<a href={url} className="mt-5">
 					<img
 						src="https://community.akamai.steamstatic.com/public/images/signinthroughsteam/sits_01.png"
 						alt="Sign In Button"
