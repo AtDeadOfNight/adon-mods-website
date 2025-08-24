@@ -17,13 +17,17 @@ export const routes: RouteRecord[] = [
 				path: 'purchase-to-download/:file',
 				element: <PurchasePage />,
 				getStaticPaths: () =>
-					mods.filter((m) => m.requiresSignIn).map((m) => m.id)
+					mods
+						.filter((m) => m.requiresSignIn)
+						.map((m) => 'purchase-to-download/' + m.id)
 			},
 			{
 				path: 'download-page/:file',
 				element: <DownloadPage />,
 				getStaticPaths: () =>
-					mods.filter((m) => m.requiresSignIn).map((m) => m.id)
+					mods
+						.filter((m) => m.requiresSignIn)
+						.map((m) => 'download-page/' + m.id)
 			},
 			{
 				path: 'error/game-not-owned',
