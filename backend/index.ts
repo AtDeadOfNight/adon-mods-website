@@ -92,7 +92,7 @@ const app = new Elysia()
 	.get('/auth/steam', async ({ redirect, query }) => {
 		let returnTo = host + redirectURL;
 		if (query.file) {
-			returnTo += '?file=' + query.file;
+			returnTo += '?' + new URLSearchParams({ file: query.file });
 		}
 		const redirectUrl = `https://steamcommunity.com/openid/login?openid.ns=http://specs.openid.net/auth/2.0&openid.mode=checkid_setup&openid.return_to=${encodeURIComponent(
 			returnTo
