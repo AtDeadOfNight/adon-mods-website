@@ -3,6 +3,13 @@ import { z } from 'zod';
 import jwt from 'jsonwebtoken';
 import fs from 'fs';
 import path from 'path';
+import * as Sentry from "@sentry/bun";
+
+Sentry.init({
+	dsn: "https://f444ada9977c70dd46b557914d7a68ca@sentry.hloth.dev/9",
+	// Tracing
+	tracesSampleRate: 1.0, // Capture 100% of the transactions
+});
 
 const STEAM_API_KEY = process.env.STEAM_API_KEY;
 if (!STEAM_API_KEY) {
