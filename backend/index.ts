@@ -377,5 +377,8 @@ const app = new Elysia()
 		return resultingFile;
 	});
 
-app.listen(process.env.PORT || 3001);
+app.listen({
+	hostname: process.env.HOST || '127.0.0.1',
+	port: process.env.PORT || 3001,
+});
 console.log('Server running on http://localhost:' + (process.env.PORT || 3001));
