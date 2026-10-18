@@ -1,5 +1,5 @@
 export function Hero() {
-	const isRu = navigator.language.startsWith('ru');
+	const isRu = navigator.language?.startsWith('ru') ?? false;
 	return (
 		<section
 			className="flex flex-col gap-6 md:gap-4 items-center justify-center w-full

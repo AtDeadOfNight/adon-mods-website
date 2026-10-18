@@ -21,7 +21,7 @@ export function Mod({
 			requiresSignIn: false;
 	  }
 )) {
-	const isRu = navigator.language.startsWith('ru');
+	const isRu = navigator.language?.startsWith('ru') ?? false;
 	return (
 		<div
 			className="w-full p-6 rounded-xl bg-[#2c2c2c] border-[0.5px]
