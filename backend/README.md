@@ -25,12 +25,12 @@ DOWNLOADS_DIR=/srv/mods.adon.hloth.dev \
 | --- | --- | --- |
 | `STEAM_API_KEY` | required | Steam Web API key, for `GetOwnedGames` |
 | `JWT_SECRET` | required | Signs the `adon-mods-token` cookie. Changing it signs everyone out. |
-| `PUBLIC_URL` | required | The website, without a trailing slash. Redirects and the Steam callback are built from it. |
+| `PUBLIC_URL` | required | The website. Redirects and the Steam callback are built from it by appending paths, so a trailing slash is refused. |
 | `DOWNLOADS_DIR` | required | Folder that holds the paid downloads. It may be missing at startup. |
 | `HOST` | `127.0.0.1` | Listen address |
 | `PORT` | `3001` | Listen port |
 
-The backend reads the environment only, never a `.env` file. It exits with status 1 and names the missing variables, and stops gracefully on SIGTERM.
+The backend reads the environment only, never a `.env` file. It exits with status 1 and names the missing or invalid variables, and stops gracefully on SIGTERM.
 
 ## Routes
 

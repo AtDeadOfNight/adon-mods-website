@@ -61,6 +61,10 @@ func parseRange(header string, size int64) byteRange {
 		if suffix == 0 {
 			return byteRange{kind: unsatisfiable}
 		}
+		// A 206 must carry a Content-Range, and none describes zero bytes (RFC 9110 §15.3.7, §14.4).
+		if size == 0 {
+			return byteRange{kind: wholeFile}
+		}
 		return byteRange{kind: partialFile, start: int64(max(0, float64(size)-suffix)), end: size - 1}
 	}
 	start := digitsValue(match[1])

@@ -56,6 +56,9 @@ func Load(getenv func(string) string) (Config, error) {
 	if !isPlainBaseURL(publicURL) {
 		return Config{}, errors.New("PUBLIC_URL is not an http or https URL without a query or fragment")
 	}
+	if strings.HasSuffix(publicURL, "/") {
+		return Config{}, errors.New("PUBLIC_URL must not end with a slash: paths are joined to it")
+	}
 	return Config{
 		Addr:             net.JoinHostPort(cmp.Or(getenv("HOST"), "127.0.0.1"), port),
 		SteamAPIKey:      steamAPIKey,

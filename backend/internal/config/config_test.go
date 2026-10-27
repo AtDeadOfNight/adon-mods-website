@@ -43,6 +43,15 @@ func TestLoadRefusesPublicURLWithoutEchoingIt(t *testing.T) {
 	}
 }
 
+func TestLoadRefusesPublicURLEndingWithSlash(t *testing.T) {
+	for _, bad := range []string{"https://mods.adon.hloth.dev/", "https://mods.adon.hloth.dev//", "http://localhost:3001/app/"} {
+		_, err := Load(testEnv(map[string]string{"PUBLIC_URL": bad}))
+		if err == nil || err.Error() != "PUBLIC_URL must not end with a slash: paths are joined to it" {
+			t.Errorf("PUBLIC_URL %q: error %v", bad, err)
+		}
+	}
+}
+
 func TestLoadRefusesInvalidPort(t *testing.T) {
 	for _, port := range []string{"70000", "-1", "http"} {
 		if _, err := Load(testEnv(map[string]string{"PORT": port})); err == nil {

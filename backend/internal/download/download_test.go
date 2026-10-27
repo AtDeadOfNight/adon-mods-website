@@ -2,10 +2,12 @@ package download
 
 import (
 	"bytes"
+	"maps"
 	"net/http"
 	"net/http/httptest"
 	"os"
 	"path/filepath"
+	"slices"
 	"testing"
 	"time"
 )
@@ -136,9 +138,26 @@ func TestServe(t *testing.T) {
 }
 
 func TestServeEmptyFile(t *testing.T) {
-	empty := serve(t, fileDir(t, nil), http.MethodGet)
-	if empty.Code != http.StatusOK || empty.Header().Get("Content-Range") != "" || empty.Header().Get("Content-Length") != "0" {
-		t.Fatalf("empty file: %d %v", empty.Code, empty.Header())
+	dir := fileDir(t, nil)
+	whole := serve(t, dir, http.MethodGet)
+	if whole.Code != http.StatusOK || whole.Body.Len() != 0 {
+		t.Fatalf("no Range: %d, %d bytes", whole.Code, whole.Body.Len())
+	}
+	expectHeaders(t, whole.Header(), map[string]string{"Content-Length": "0", "Content-Range": "", "Accept-Ranges": "bytes"})
+
+	for _, suffix := range []string{"bytes=-5", "bytes=-1"} {
+		got := serve(t, dir, http.MethodGet, "Range", suffix)
+		if got.Code != http.StatusOK || got.Body.Len() != 0 || !maps.EqualFunc(got.Header(), whole.Header(), slices.Equal) {
+			t.Errorf("%s: %d %v, want the answer without Range %v", suffix, got.Code, got.Header(), whole.Header())
+		}
+	}
+
+	for _, rangeHeader := range []string{"bytes=0-", "bytes=0-0", "bytes=-0"} {
+		got := serve(t, dir, http.MethodGet, "Range", rangeHeader)
+		if got.Code != http.StatusRequestedRangeNotSatisfiable {
+			t.Errorf("%s: %d, want 416", rangeHeader, got.Code)
+		}
+		expectHeaders(t, got.Header(), map[string]string{"Content-Range": "bytes */0", "Accept-Ranges": ""})
 	}
 }
 
